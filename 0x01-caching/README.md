@@ -1,121 +1,104 @@
-# Caching Project
+# Cache Systems Project
 
-Welcome to the Caching project! This README file will guide you through the different tasks and requirements of this project. The goal is to implement various caching algorithms to understand how they work and their respective use cases.
+Author: Baruk1-netizen
 
-## Background Context
+## Overview
 
-In this project, you will learn about different caching algorithms. A caching system stores data temporarily to provide faster access to frequently used data and improve performance. Various cache replacement policies manage how data is stored and evicted from the cache.
+This project involves the creation of different caching systems, each implementing a specific cache replacement policy. The caching systems inherit from a base class, `BaseCaching`, and use a dictionary, `self.cache_data`, for storing the cache items.
 
-## Resources
+## Caching Systems
 
-To complete this project, you should read or watch the following resources:
+### 0. Basic Cache
 
-- Cache replacement policies - FIFO
-- Cache replacement policies - LIFO
-- Cache replacement policies - LRU
-- Cache replacement policies - MRU
-- Cache replacement policies - LFU
+- **Class Name:** `BasicCache`
+- **Inheritance:** Inherits from `BaseCaching`
+- **Behavior:** 
+  - The caching system does not have a limit.
+  - **Methods:**
+    - `put(self, key, item)`: Assigns the `item` value to the `key` in the `self.cache_data` dictionary. If `key` or `item` is `None`, the method does nothing.
+    - `get(self, key)`: Returns the value in `self.cache_data` linked to `key`. If `key` is `None` or does not exist in `self.cache_data`, returns `None`.
 
-## Learning Objectives
+### 1. FIFO Cache
 
-By the end of this project, you should be able to explain the following concepts without assistance:
+- **Class Name:** `FIFOCache`
+- **Inheritance:** Inherits from `BaseCaching`
+- **Behavior:**
+  - Uses First-In-First-Out (FIFO) caching algorithm.
+  - **Methods:**
+    - `put(self, key, item)`: Adds the `item` to the cache with the given `key`. If the number of items exceeds `BaseCaching.MAX_ITEMS`, it discards the oldest item and prints `DISCARD: <key>` where `<key>` is the key of the discarded item.
+    - `get(self, key)`: Returns the value associated with `key`. If `key` is `None` or not present, returns `None`.
 
-- What a caching system is
-- What FIFO (First In, First Out) means
-- What LIFO (Last In, First Out) means
-- What LRU (Least Recently Used) means
-- What MRU (Most Recently Used) means
-- What LFU (Least Frequently Used) means
-- The purpose of a caching system
-- The limits of a caching system
+### 2. LIFO Cache
 
-## Requirements
+- **Class Name:** `LIFOCache`
+- **Inheritance:** Inherits from `BaseCaching`
+- **Behavior:**
+  - Uses Last-In-First-Out (LIFO) caching algorithm.
+  - **Methods:**
+    - `put(self, key, item)`: Adds the `item` to the cache with the given `key`. If the number of items exceeds `BaseCaching.MAX_ITEMS`, it discards the most recently added item and prints `DISCARD: <key>` where `<key>` is the key of the discarded item.
+    - `get(self, key)`: Returns the value associated with `key`. If `key` is `None` or not present, returns `None`.
 
-### Python Scripts
+### 3. LRU Cache
 
-- All your files will be interpreted/compiled on Ubuntu 18.04 LTS using Python 3.7
-- All your files should end with a new line
-- The first line of all your files should be exactly `#!/usr/bin/env python3`
-- A `README.md` file, at the root of the folder of the project, is mandatory
-- Your code should use the `pycodestyle` style (version 2.5)
-- All your files must be executable
-- The length of your files will be tested using `wc`
-- All your modules should have documentation
-- All your classes should have documentation
-- All your functions (inside and outside a class) should have documentation
-- Documentation should be a real sentence explaining the purpose of the module, class, or method
+- **Class Name:** `LRUCache`
+- **Inheritance:** Inherits from `BaseCaching`
+- **Behavior:**
+  - Uses Least Recently Used (LRU) caching algorithm.
+  - **Methods:**
+    - `put(self, key, item)`: Adds the `item` to the cache with the given `key`. If the number of items exceeds `BaseCaching.MAX_ITEMS`, it discards the least recently used item and prints `DISCARD: <key>` where `<key>` is the key of the discarded item.
+    - `get(self, key)`: Returns the value associated with `key`. If `key` is `None` or not present, returns `None`.
 
-### BaseCaching Parent Class
+### 4. MRU Cache
 
-All your classes must inherit from the `BaseCaching` class, which is defined below:
+- **Class Name:** `MRUCache`
+- **Inheritance:** Inherits from `BaseCaching`
+- **Behavior:**
+  - Uses Most Recently Used (MRU) caching algorithm.
+  - **Methods:**
+    - `put(self, key, item)`: Adds the `item` to the cache with the given `key`. If the number of items exceeds `BaseCaching.MAX_ITEMS`, it discards the most recently used item and prints `DISCARD: <key>` where `<key>` is the key of the discarded item.
+    - `get(self, key)`: Returns the value associated with `key`. If `key` is `None` or not present, returns `None`.
+
+## Repository Structure
+
+- **GitHub repository:** `alx-backend`
+- **Directory:** `0x01-caching`
+- **Files:**
+  - `0-basic_cache.py`: Contains the implementation of `BasicCache`.
+  - `1-fifo_cache.py`: Contains the implementation of `FIFOCache`.
+  - `2-lifo_cache.py`: Contains the implementation of `LIFOCache`.
+  - `3-lru_cache.py`: Contains the implementation of `LRUCache`.
+  - `4-mru_cache.py`: Contains the implementation of `MRUCache`.
+
+## Usage
+
+Each caching system can be tested using corresponding main files provided in the repository. The main files demonstrate the creation of cache instances, adding items to the cache, retrieving items, and the behavior of each caching system when the cache limit is exceeded.
+
+## Example
+
+Here's a quick example of using the `BasicCache`:
 
 ```python
-$ cat base_caching.py
 #!/usr/bin/python3
-""" BaseCaching module
-"""
+""" 0-main """
+BasicCache = __import__('0-basic_cache').BasicCache
 
-class BaseCaching():
-    """ BaseCaching defines:
-      - constants of your caching system
-      - where your data are stored (in a dictionary)
-    """
-    MAX_ITEMS = 4
-
-    def __init__(self):
-        """ Initialize
-        """
-        self.cache_data = {}
-
-    def print_cache(self):
-        """ Print the cache
-        """
-        print("Current cache:")
-        for key in sorted(self.cache_data.keys()):
-            print("{}: {}".format(key, self.cache_data.get(key)))
-
-    def put(self, key, item):
-        """ Add an item in the cache
-        """
-        raise NotImplementedError("put must be implemented in your cache class")
-
-    def get(self, key):
-        """ Get an item by key
-        """
-        raise NotImplementedError("get must be implemented in your cache class")
+my_cache = BasicCache()
+my_cache.print_cache()
+my_cache.put("A", "Hello")
+my_cache.put("B", "World")
+my_cache.put("C", "Holberton")
+my_cache.print_cache()
+print(my_cache.get("A"))  # Output: Hello
+print(my_cache.get("B"))  # Output: World
+print(my_cache.get("C"))  # Output: Holberton
+print(my_cache.get("D"))  # Output: None
+my_cache.print_cache()
 ```
 
-## Tasks
+## License
 
-### 0. Basic Dictionary
+This project is licensed under the MIT License.
 
-Create a class `BasicCache` that inherits from `BaseCaching` and is a caching system without any limit.
+---
 
-### 1. FIFO Caching
-
-Create a class `FIFOCache` that inherits from `BaseCaching` and implements a FIFO caching system.
-
-### 2. LIFO Caching
-
-Create a class `LIFOCache` that inherits from `BaseCaching` and implements a LIFO caching system.
-
-### 3. LRU Caching
-
-Create a class `LRUCache` that inherits from `BaseCaching` and implements an LRU caching system.
-
-### 4. MRU Caching
-
-Create a class `MRUCache` that inherits from `BaseCaching` and implements an MRU caching system.
-
-### 5. LFU Caching
-
-Create a class `LFUCache` that inherits from `BaseCaching` and implements an LFU caching system.
-
-## Repository
-
-- GitHub repository: `alx-backend`
-- Directory: `0x01-caching`
-
-## Author
-
-- **@waltertaya**
+For further information, please refer to the project's repository on GitHub.
