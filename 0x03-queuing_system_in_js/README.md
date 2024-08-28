@@ -82,6 +82,4 @@ $ npm run dev <script_name.js>
 - Ensure that the Redis server is running before executing any scripts.
 - Follow the instructions in each task to achieve the desired functionality.
 
-## Author
 
-- [waltertaya](https://www.github.com/waltertaya)
